@@ -9,6 +9,7 @@ Period 2
 """
 from math import sqrt
 from random import sample
+from functools import reduce 
 
 # Rename the built-in zip (http://docs.python.org/3/library/functions.html#zip)
 _zip = zip
@@ -88,5 +89,7 @@ def mean(s):
     -0.5
     """
     # BEGIN Question 1
-    "*** YOUR CODE HERE ***"
+    assert len(s) > 0
+    return reduce(lambda x, y: x + y, s) / len(s)
+
     # END Question 1
