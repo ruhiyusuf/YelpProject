@@ -53,12 +53,18 @@ def group_by_centroid(restaurants, centroids):
     nc = zip([find_closest(restaurant_location(r), centroids) for r in restaurants], restaurants)
     return group_by_first(nc)
     # END Question 4
-
-
+    # returns list of restauraunts grouped by centroid
+restaurants1 = [
+    make_restaurant('A', [-3, -4], [], 3, [make_review('A', 2)]),
+    make_restaurant('B', [1, -1],  [], 1, [make_review('B', 1)]),
+    make_restaurant('C', [2, -4],  [], 1, [make_review('C', 5)]),
+        ]
 def find_centroid(cluster):
     """Return the centroid of the locations of the restaurants in cluster."""
     # BEGIN Question 5
-    "*** YOUR CODE HERE ***"
+    lat = [float(restaurant_location(r)[0]) for r in cluster]
+    lon = [float(restaurant_location(r)[1]) for r in cluster]
+    return [mean(lat), mean(lon)]
     # END Question 5
 
 
@@ -73,7 +79,7 @@ def k_means(restaurants, k, max_updates=100):
     while old_centroids != centroids and n < max_updates:
         old_centroids = centroids
         # BEGIN Question 6
-        "*** YOUR CODE HERE ***"
+        centroids = [find_centroid(c) for c in group_by_centroid(restaurants, centroids)]
         # END Question 6
         n += 1
     return centroids
