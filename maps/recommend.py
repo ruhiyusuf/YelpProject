@@ -54,16 +54,12 @@ def group_by_centroid(restaurants, centroids):
     return group_by_first(nc)
     # END Question 4
     # returns list of restauraunts grouped by centroid
-restaurants1 = [
-    make_restaurant('A', [-3, -4], [], 3, [make_review('A', 2)]),
-    make_restaurant('B', [1, -1],  [], 1, [make_review('B', 1)]),
-    make_restaurant('C', [2, -4],  [], 1, [make_review('C', 5)]),
-        ]
+
 def find_centroid(cluster):
     """Return the centroid of the locations of the restaurants in cluster."""
     # BEGIN Question 5
-    lat = [float(restaurant_location(r)[0]) for r in cluster]
-    lon = [float(restaurant_location(r)[1]) for r in cluster]
+    lat = [restaurant_location(r)[0] for r in cluster]
+    lon = [restaurant_location(r)[1] for r in cluster]
     return [mean(lat), mean(lon)]
     # END Question 5
 
@@ -104,7 +100,13 @@ def find_predictor(user, restaurants, feature_fn):
     ys = [user_rating(user, restaurant_name(r)) for r in restaurants]
 
     # BEGIN Question 7
-    "*** YOUR CODE HERE ***"
+    S_xx = sum([(x - mean(xs))**2 for x in xs])
+    S_yy = sum([(y - mean(ys))**2 for y in ys])
+    S_xy = sum([(elem[0] - mean(xs)) * (elem[1] - mean(ys)) for elem in zip(xs, ys)])
+    
+    b = S_xy/S_xx
+    a = mean(ys) - (b * mean(xs))
+    r_squared = S_xy**2 / (S_xx * S_yy)
     # END Question 7
 
     def predictor(restaurant):
@@ -124,7 +126,7 @@ def best_predictor(user, restaurants, feature_fns):
     """
     reviewed = user_reviewed_restaurants(user, restaurants)
     # BEGIN Question 8
-    "*** YOUR CODE HERE ***"
+    return max([find_predictor(user, reviewed, ff) for ff in feature_fns], key=lambda z : z[1])[0]
     # END Question 8
 
 
